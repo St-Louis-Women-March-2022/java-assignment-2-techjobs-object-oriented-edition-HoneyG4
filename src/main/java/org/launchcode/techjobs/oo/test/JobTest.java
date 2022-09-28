@@ -23,13 +23,24 @@ public class JobTest {
    @Test
     public void testJobConstructorSetsAllFields(){
        Job job =  new Job("Product tester", new Employer("ACME"), new Location("Desert"), new PositionType("Quality control"), new CoreCompetency("Persistence"));
+       Employer employer = job.getEmployer();
+       Location location = job.getLocation();
+       PositionType positionType = job.getPositionType();
+       CoreCompetency coreCompetency = job.getCoreCompetency();
+
+
        assertTrue(job instanceof Job);
        assertTrue( job.getPositionType() instanceof PositionType);
        assertTrue( job.getEmployer() instanceof Employer);
        assertTrue(job.getLocation() instanceof Location);
        assertTrue(job.getCoreCompetency() instanceof CoreCompetency);
+
        assertEquals("Product tester",job.getName());
-     //  assertEquals(assertEquals("ACME"),);
+       assertEquals("ACME",employer.getValue());
+       assertEquals("Desert", location.getValue());
+       assertEquals("Quality control", positionType.getValue());
+       assertEquals("Persistence", coreCompetency.getValue());
+
 
     }
     @Test
@@ -51,8 +62,20 @@ public class JobTest {
     @Test
     public void testToStringContainsCorrectLabelsAndData(){
         Job job =  new Job("Product tester", new Employer("ACME"), new Location("Desert"), new PositionType("Quality control"), new CoreCompetency("Persistence"));
-       // assertEquals(job.toString(),);
+        assertEquals( "\nID: "+ job.getId() +"\nName: Product tester\nEmployer: ACME\nLocation: Desert\nPosition Type: Quality control\nCore Competency: Persistence\n", job.toString());
+
     }
+    @Test
+   public void testToStringHandlesEmptyField(){
+        Job job =  new Job("Product tester", new Employer("ACME"),new Location(""),new PositionType("Quality control"), new CoreCompetency("Persistence"));
+        assertEquals("\nID: "+ job.getId() +"\nName: Product tester\nEmployer: ACME\nLocation: Data not available\nPosition Type: Quality control\nCore Competency: Persistence\n", job.toString());
+    }
+    @Test
+    public  void testToStringHandlesFieldContainingOnlyID(){
+        Job job = new Job();
+        assertEquals("\nOOPS! This job does not seem to exist.\n",job.toString() );
+    }
+
 
 
 }
